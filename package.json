@@ -1,0 +1,15 @@
+{
+  "name": "w8d1",
+  "version": "1.0.0",
+  "description": "## Red social",
+  "main": "index.js",
+  "private": "true",
+ "workspaces": ["api", "app"],
+
+
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fabio",
+  "license": "ISC"
+}

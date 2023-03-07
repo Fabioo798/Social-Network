@@ -1,0 +1,44 @@
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 50px;
+}
+
+.login-form label {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+  font-size: 16px;
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 300px;
+  box-shadow: inset 1px 1px 2px #f0f0f0, inset -1px -1px 2px #ffffff;
+}
+
+.login-form button[type="submit"] {
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 5px;
+  background-color: #008CBA;
+  color: #fff;
+  border: none;
+  width: 150px;
+  cursor: pointer;
+}
+
+.login-form button[type="submit"]:hover {
+  background-color: #005f77;
+}
+
+.login-form .error-message {
+  color: red;
+  font-size: 16px;
+  margin-top: 10px;
+}
