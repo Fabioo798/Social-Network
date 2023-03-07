@@ -26,6 +26,3 @@ jobs:
           SONAR_TOKEN: ${{ secrets_SONAR_APP }}
         with:
           projectBaseDir: app
-
-
-
