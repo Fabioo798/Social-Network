@@ -1,4 +1,4 @@
-name: app
+name: api
 on:
   push:
     branches:
@@ -17,11 +17,11 @@ jobs:
         run: npm ci
       - name: Testing in production with coverage
         run: npm run test:prod #Change for a valid npm script
-        working-directory: app
-
+        working-directory: api
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets_SONAR_TOKEN }}
-
+          SONAR_TOKEN: ${{ secret_SONAR_API }}
+        with:
+          projectBaseDir: api
