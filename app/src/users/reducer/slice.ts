@@ -61,5 +61,4 @@ const slice = createSlice({
  },
 });
 
-// export const { logout, updateRelation } = slice.caseReducers;
 export const { reducer } = slice;

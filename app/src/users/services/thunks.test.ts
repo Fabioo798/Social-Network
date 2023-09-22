@@ -15,6 +15,7 @@ import {
 import axios from "axios";
 import { mockLoginUser, token } from "../../utils/mocks";
 
+const password = "test";
 // import users from "../component/users/users";
 jest.mock("axios", () => ({
  get: jest.fn(),
@@ -84,7 +85,7 @@ describe("Given asyncRegister function", () => {
     asyncRegister({
      name: "test1",
      email: "test@test",
-     password: "test",
+     password: password,
     })
    );
    expect(postSpy).toHaveBeenCalledWith(
@@ -92,7 +93,7 @@ describe("Given asyncRegister function", () => {
     {
      name: "test1",
      email: "test@test",
-     password: "test",
+     password: password,
     },
     { headers: { "Content-Type": "application/json" } }
    );
@@ -111,7 +112,7 @@ describe("Given asyncRegister function", () => {
     asyncRegister({
      name: "test1",
      email: "test@test",
-     password: "test",
+     password: password,
     })
    );
    expect(postSpy).toHaveBeenCalledWith(
@@ -119,7 +120,7 @@ describe("Given asyncRegister function", () => {
     {
      name: "test1",
      email: "test@test",
-     password: "test",
+     password: password,
     },
     { headers: { "Content-Type": "application/json" } }
    );
@@ -147,14 +148,14 @@ describe("Given asyncLogin function", () => {
    await store.dispatch(
     asyncLogin({
      email: "test@test",
-     password: "test",
+     password: password,
     })
    );
    expect(postSpy).toHaveBeenCalledWith(
     LOGIN_USER,
     {
      email: "test@test",
-     password: "test",
+     password: password,
     },
     { headers: { "Content-Type": "application/json" } }
    );
@@ -176,14 +177,14 @@ describe("Given asyncLogin function", () => {
    await store.dispatch(
     asyncLogin({
      email: "test@test",
-     password: "test",
+     password: password,
     })
    );
    expect(postSpy).toHaveBeenCalledWith(
     LOGIN_USER,
     {
      email: "test@test",
-     password: "test",
+     password: password,
     },
     { headers: { "Content-Type": "application/json" } }
    );
@@ -208,7 +209,7 @@ describe("Given editProfile function", () => {
    await store.dispatch(
     asyncEditProfile({
      email: "test@test",
-     password: "test",
+     password: password,
     })
    );
    expect(patchSpy).toHaveBeenCalledWith(EDIT_PROFILE_USER, mockLoginUser, {
@@ -233,7 +234,7 @@ describe("Given editProfile function", () => {
    await store.dispatch(
     asyncEditProfile({
      email: "test@test",
-     password: "test",
+     password: password,
     })
    );
    expect(patchSpy).toHaveBeenCalledWith(EDIT_PROFILE_USER, mockLoginUser, {
