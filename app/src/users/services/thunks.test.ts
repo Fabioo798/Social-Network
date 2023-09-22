@@ -16,7 +16,6 @@ import axios from "axios";
 import { mockLoginUser, token } from "../../utils/mocks";
 
 const password = "test";
-// import users from "../component/users/users";
 jest.mock("axios", () => ({
  get: jest.fn(),
  post: jest.fn(),
