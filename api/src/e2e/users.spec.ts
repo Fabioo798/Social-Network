@@ -60,7 +60,7 @@ describe('Given an "app" with "/users" route', () => {
   });
   test('then the get (GET ALL NO ok) to urls /users should send a 404 status', async () => {
    await request(app)
-    .get('/usr')
+    .get('/ser')
     .set('Authorization', `Bearer ${token}`)
     .expect(404);
   });
