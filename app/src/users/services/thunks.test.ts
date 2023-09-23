@@ -13,9 +13,13 @@ import {
  REGISTER_USER,
 } from "../model/url.model";
 import axios from "axios";
-import { mockLoginUser, token } from "../../utils/mocks";
+import {
+ mockLoginUser,
+ mockUserRegister,
+ password,
+ token,
+} from "../../utils/mocks";
 
-const password = "test";
 jest.mock("axios", () => ({
  get: jest.fn(),
  post: jest.fn(),
@@ -68,8 +72,8 @@ describe("Given asyncload user function", () => {
 });
 
 describe("Given asyncRegister function", () => {
- describe("When is it called", () => {
-  test("Then it should make an http request and register the user", async () => {
+ describe("If is it called", () => {
+  test("It must make an http request and register the user", async () => {
    const postSpy = jest.spyOn(axios, "post").mockResolvedValueOnce({
     data: {
      results: {},
@@ -80,49 +84,25 @@ describe("Given asyncRegister function", () => {
      users: reducer,
     },
    });
-   await store.dispatch(
-    asyncRegister({
-     name: "test1",
-     email: "test@test",
-     password: password,
-    })
-   );
-   expect(postSpy).toHaveBeenCalledWith(
-    REGISTER_USER,
-    {
-     name: "test1",
-     email: "test@test",
-     password: password,
-    },
-    { headers: { "Content-Type": "application/json" } }
-   );
+   await store.dispatch(asyncRegister(mockUserRegister));
+   expect(postSpy).toHaveBeenCalledWith(REGISTER_USER, mockUserRegister, {
+    headers: { "Content-Type": "application/json" },
+   });
    store.getState();
   });
  });
  describe("When is it called but rejected", () => {
   test("Then it should make an http request and return error", async () => {
-   const postSpy = jest.spyOn(axios, "post").mockResolvedValueOnce(new Error());
+   const spyPost = jest.spyOn(axios, "post").mockResolvedValueOnce(new Error());
    const store = configureStore({
     reducer: {
      users: reducer,
     },
    });
-   await store.dispatch(
-    asyncRegister({
-     name: "test1",
-     email: "test@test",
-     password: password,
-    })
-   );
-   expect(postSpy).toHaveBeenCalledWith(
-    REGISTER_USER,
-    {
-     name: "test1",
-     email: "test@test",
-     password: password,
-    },
-    { headers: { "Content-Type": "application/json" } }
-   );
+   await store.dispatch(asyncRegister(mockUserRegister));
+   expect(spyPost).toHaveBeenCalledWith(REGISTER_USER, mockUserRegister, {
+    headers: { "Content-Type": "application/json" },
+   });
    store.getState();
   });
  });

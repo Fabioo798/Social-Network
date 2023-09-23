@@ -6,3 +6,11 @@ export const mockLoginUser: Partial<UserStructure> = {
 };
 
 export const token: string = "test";
+
+export const password = "test";
+
+export const mockUserRegister = {
+ name: "test1",
+ email: "test@test",
+ password: password,
+};
