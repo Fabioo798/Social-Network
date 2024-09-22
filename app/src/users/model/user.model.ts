@@ -1,18 +1,19 @@
-import { Draft } from "@reduxjs/toolkit";
-
 type HasId = {
-  id: string;
+ id: string;
 };
 
 export type ProtoUserStructure = {
-  name: string;
-  email: string;
-  password: string;
-  friend: [];
-  enemies: [];
-  draft?: Draft<UserStructure>;
-  token: string;
-  relation: 'friend' | 'enemy'
+ id: string;
+ name: string;
+ email: string;
+ password: string;
+ friend: [];
+ enemies: [];
+ token: string;
+ relation: "friend" | "enemy";
 };
 
 export type UserStructure = HasId & ProtoUserStructure;
+
+// loginUser = { email, pass}
+//proto user = { * exept  id}

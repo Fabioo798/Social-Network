@@ -2,10 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import { asyncLoadUsers, asyncLogin, asyncRegister } from "../services/thunks";
 import { UserStructure } from "../model/user.model";
 
-export type status = "loading" | "idle" | "error";
+export type status = "loading" | "complete" | "error" | "idle";
 
 export type state = {
- userLoggingStatus: status;
+ userLoginStatus: status;
  userLogged: {
   token: string;
   data: UserStructure;
@@ -15,7 +15,7 @@ export type state = {
 };
 
 export const initialState: state = {
- userLoggingStatus: "idle",
+ userLoginStatus: "idle",
  userLogged: null,
  LoadingUserStatus: "idle",
  users: [],
@@ -30,7 +30,7 @@ const slice = createSlice({
    state.LoadingUserStatus = "loading";
   });
   builder.addCase(asyncLoadUsers.fulfilled, (state, action) => {
-   state.LoadingUserStatus = "idle";
+   state.LoadingUserStatus = "complete";
    console.log(action.payload.results);
    state.users = action.payload.results;
   });
@@ -40,7 +40,7 @@ const slice = createSlice({
 
   //login cases
   builder.addCase(asyncLogin.fulfilled, (state, action) => {
-   state.LoadingUserStatus = "idle";
+   state.userLoginStatus = "complete";
    state.userLogged = {
     token: action.payload.results.token,
     data: action.payload.results.data,
@@ -48,10 +48,10 @@ const slice = createSlice({
    console.log(state.userLogged);
   });
   builder.addCase(asyncLogin.pending, (state, _action) => {
-   state.LoadingUserStatus = "loading";
+   state.userLoginStatus = "loading";
   });
   builder.addCase(asyncLogin.rejected, (state, _action) => {
-   state.LoadingUserStatus = "error";
+   state.userLoginStatus = "error";
   });
 
   //register cases

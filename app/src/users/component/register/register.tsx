@@ -1,65 +1,66 @@
-import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Field, Form, Formik, FormikHelpers } from "formik";
+import { asyncRegister } from "../../services/thunks";
+import { AppDispatch } from "../../../core/store/store";
+import { registerCredential } from "../../model/types";
 
-import { UserApiRepo } from "../../api.repo";
-import "./register.css";
+const Register = () => {
+ const dispatch = useDispatch<AppDispatch>();
 
-const userApiRepo = new UserApiRepo();
+ const handleSubmit = async (
+  values: registerCredential,
+  { setSubmitting, resetForm }: FormikHelpers<registerCredential>
+ ) => {
+  try {
+   await dispatch(asyncRegister(values));
+   setSubmitting(false);
+   resetForm();
+  } catch (error) {
+   setSubmitting(false);
+   // handle error
+  }
+ };
 
-const Register = (props: any) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      await userApiRepo.register(name, email, password);
-      setName("");
-      setEmail("");
-      setPassword("");
-      setError("");
-    } catch (error) {
-      setError("registration failed");
-    }
-  };
-
-  return (
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </div>
-        <button type="submit">Register</button>
-      </form>
-      {error && <p>{error}</p>}
-    </div>
-  );
+ return (
+  <div className="form-container sign-up-container">
+   <Formik
+    initialValues={{
+     name: "",
+     email: "",
+     password: "",
+    }}
+    onSubmit={handleSubmit}
+   >
+    <Form>
+     <h1>Sign Up</h1>
+     <div className="social-container">
+      <a href="#" target="_blank" className="social">
+       <i className="fab fa-github"></i>
+      </a>
+      <a href="#" target="_blank" className="social">
+       <i className="fab fa-codepen"></i>
+      </a>
+      <a href="#" target="_blank" className="social">
+       <i className="fab fa-google"></i>
+      </a>
+     </div>
+     <span>Or use your Email for registration</span>
+     <label>
+      <Field type="text" name="name" placeholder="Name" />
+     </label>
+     <label>
+      <Field type="email" name="email" placeholder="Email" />
+     </label>
+     <label>
+      <Field type="password" name="password" placeholder="Password" />
+     </label>
+     <button type="submit" style={{ marginTop: "9px" }}>
+      Sign up
+     </button>
+    </Form>
+   </Formik>
+  </div>
+ );
 };
 
 export default Register;

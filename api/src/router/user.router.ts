@@ -13,18 +13,18 @@ userRouter.get('/', interceptor.logged, controller.getAll.bind(controller));
 userRouter.post('/login', controller.logIn.bind(controller));
 userRouter.post('/register', controller.register.bind(controller));
 userRouter.patch(
-  '/add_relation/:id',
-  interceptor.logged,
-  controller.addRelation.bind(controller)
-);
-userRouter.delete(
-  '/remove_relation/:id',
-  interceptor.logged,
-  controller.removeRelation.bind(controller)
+ '/add_relation/:userId/:targetUserId',
+ interceptor.logged,
+ controller.addRelation.bind(controller)
 );
 userRouter.patch(
-  '/edit_profile',
-  interceptor.logged,
-  interceptor.authorized,
-  controller.editProfile.bind(controller)
+ '/remove_relation/:userId/:targetUserId',
+ interceptor.logged,
+ controller.removeRelation.bind(controller)
+);
+userRouter.patch(
+ '/edit_profile/:id',
+ interceptor.logged,
+ interceptor.authorized,
+ controller.editProfile.bind(controller)
 );

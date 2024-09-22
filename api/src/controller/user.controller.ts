@@ -25,12 +25,9 @@ export class UserController {
    req.body.friends = [];
    req.body.enemies = [];
 
-   const data = await this.repo.create(req.body);
+   await this.repo.create(req.body);
 
-   resp.status(201);
-   resp.json({
-    results: [data],
-   });
+   resp.status(201).json({ message: 'successfully registered!' });
   } catch (error) {
    next(error);
   }
@@ -92,18 +89,22 @@ export class UserController {
  async addRelation(req: RequestPlus, resp: Response, next: NextFunction) {
   try {
    debug('add relation');
-   const userId = req.info?.id;
-   if (!userId) throw new HTTPError(404, 'Not found', 'Not found user id');
+
+   const { userId, targetUserId } = req.params; // User initiating the action
+   if (!userId || !targetUserId)
+    throw new HTTPError(404, 'Not found', 'Not found user id');
+
    const actualUser = await this.repo.queryId(userId);
-   const data = await this.repo.queryId(req.params.id);
-   if (!data) throw new HTTPError(404, 'Not found', 'Not found user id');
+   const targetUser = await this.repo.queryId(targetUserId);
+   if (!actualUser || !targetUser)
+    throw new HTTPError(404, 'Not found', 'Not found user id');
 
    // Determine whether to add as friend or enemy
    const { relation } = req.body;
    if (relation === 'friend') {
-    actualUser.friends.push(data);
+    actualUser.friends.push(targetUser);
    } else if (relation === 'enemy') {
-    actualUser.enemies.push(data);
+    actualUser.enemies.push(targetUser);
    } else {
     throw new HTTPError(400, 'Bad request', 'Invalid relation specified');
    }
@@ -120,21 +121,24 @@ export class UserController {
  async removeRelation(req: RequestPlus, resp: Response, next: NextFunction) {
   try {
    debug('remove relation');
-   const userId = req.info?.id;
-   if (!userId) throw new HTTPError(404, 'Not found', 'Not found user id');
+   const { userId, targetUserId } = req.params; // User initiating the action
+   if (!userId || !targetUserId)
+    throw new HTTPError(404, 'Not found', 'Not found user id');
+
    const actualUser = await this.repo.queryId(userId);
-   const data = await this.repo.queryId(req.params.id);
-   if (!data) throw new HTTPError(404, 'Not found', 'Not found user id');
+   const targetUser = await this.repo.queryId(targetUserId);
+   if (!actualUser || !targetUser)
+    throw new HTTPError(404, 'Not found', 'Not found user id');
 
    // Determine whether to remove from friends or enemies
    const { relation } = req.body;
    if (relation === 'friend') {
     actualUser.friends = actualUser.friends.filter(
-     (friend) => friend.id !== data.id
+     (friend) => friend.id !== targetUser.id
     );
    } else if (relation === 'enemy') {
     actualUser.enemies = actualUser.enemies.filter(
-     (enemy) => enemy.id !== data.id
+     (enemy) => enemy.id !== targetUser.id
     );
    } else {
     throw new HTTPError(400, 'Bad request', 'Invalid relation specified');
