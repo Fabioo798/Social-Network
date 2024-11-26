@@ -42,3 +42,9 @@
   font-size: 16px;
   margin-top: 10px;
 }
+
+.login-form .login-status {
+  padding: 10px;
+  color: red;
+}
+

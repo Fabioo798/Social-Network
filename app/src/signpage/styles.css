@@ -1,12 +1,15 @@
 .App {
- background: url(./../../public/businessman-holding-of-global-data-network-and-soc-2022-11-09-15-07-04-utc.jpg)
-  no-repeat center center;
- background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ensures the container is centered vertically */
+  margin: 0;
 }
 
 h1 {
  font-weight: bold;
  margin: 0;
+ padding-left: 5%;
 }
 
 p {
@@ -29,17 +32,24 @@ a {
 }
 
 .container {
- background: #fff;
- border-radius: 90px;
- box-shadow: 30px 14px 28px rgba(0, 0, 5, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
- position: relative;
- overflow: hidden;
- opacity: 85%;
- width: 768px;
- max-width: 100%;
- min-height: 480px;
- transition: 333ms;
- right: 25%;
+  background: #fff;
+  border-radius: 90px;
+  box-shadow: 30px 14px 28px rgba(0, 0, 5, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  opacity: 85%;
+  width: 80%; /* Use percentage for responsive width */
+  max-width: 768px;
+  min-height: 480px;
+  transition: 333ms;
+  right: auto; /* Remove the fixed positioning */
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 90%; /* Adjust width for smaller screens */
+    min-height: 400px; /* Adjust as necessary */
+  }
 }
 
 .form-container form {
@@ -176,6 +186,7 @@ button.ghost {
 }
 
 .overlay-left {
+ padding-left: 15%;
  transform: translateY(-20%);
 }
 

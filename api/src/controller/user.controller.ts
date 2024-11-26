@@ -5,7 +5,7 @@ import { HTTPError } from '../error/error.js';
 import { RequestPlus, TokenPayload } from '../interfaces/interfaces.js';
 import { Auth } from '../services/auth.js';
 
-const debug = createDebug('UserController');
+const debug = createDebug('W7CH5: UserController');
 
 export class UserController {
  constructor(public repo: UserRepo) {
@@ -36,7 +36,7 @@ export class UserController {
  async logIn(req: Request, resp: Response, next: NextFunction) {
   try {
    debug('login:post method');
-
+   console.log(req.body.email, req.body.password);
    if (!req.body.email || !req.body.password)
     throw new HTTPError(401, 'Unauthorized', 'Invalid User Name o password');
 
@@ -45,6 +45,9 @@ export class UserController {
     value: req.body.email,
    });
 
+
+
+   console.log(data.length)
    if (!data.length)
     throw new HTTPError(401, 'Unauthorized', 'User Name not found');
 
@@ -59,7 +62,7 @@ export class UserController {
 
    const token = Auth.createJWT(payload);
 
-   resp.status(202);
+   resp.status(200);
    resp.json({
     results: {
      token,
@@ -67,6 +70,7 @@ export class UserController {
     },
    });
   } catch (error) {
+   debug('login failed');
    next(error);
   }
  }

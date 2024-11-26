@@ -18,7 +18,7 @@ export function SignPage() {
      <div className="overlay">
       <div className="overlay-panel overlay-left">
        <h1>Log in</h1>
-       <p>Sign in here if you already have an account </p>
+       <p>Welcome back! </p>
        <button
         className="ghost mt-5"
         id="signIn"
@@ -28,8 +28,8 @@ export function SignPage() {
        </button>
       </div>
       <div className="overlay-panel overlay-right">
-       <h1>Create, Account!</h1>
-       <p>Sign up if you still don't have an account </p>
+       <h1>Create an Account!</h1>
+       <p>And join the fun! </p>
        <button
         className="ghost"
         id="signUp"

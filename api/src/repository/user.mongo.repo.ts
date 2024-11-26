@@ -62,12 +62,7 @@ export class UserRepo implements Repo<User> {
   async search(query: { key: string; value: unknown }): Promise<User[]> {
     debug('search');
     const data = await UserModel.find({ [query.key]: query.value });
-    if (!data)
-      throw new HTTPError(
-        404,
-        'Not Found',
-        'search not possible: element not found in database'
-      );
+
     return data;
   }
 
