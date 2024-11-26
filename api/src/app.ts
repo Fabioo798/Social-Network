@@ -1,11 +1,8 @@
-import createDebug from 'debug';
 import cors from 'cors';
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import morgan from 'morgan';
-import { CustomError } from './error/error.js';
 import { userRouter } from './router/user.router.js';
 
-const debug = createDebug('Social network backend');
 
 export const app = express();
 
@@ -22,24 +19,7 @@ app.use(cors(corsOptions));
 app.use('/users', userRouter);
 app.use('/users/:id', userRouter);
 
-app.use(
- // eslint-disable-next-line @typescript-eslint/no-unused-vars
- (error: CustomError, _req: Request, resp: Response, _next: NextFunction) => {
-  debug('error middleware');
-  const status = error.statusCode || 500;
-  const statusMessage = error.statusMessage || 'Internal server error';
-  resp.json([
-   {
-    error: [
-     {
-      status,
-      statusMessage,
-     },
-    ],
-   },
-  ]);
- }
-);
+
 
 app.get('/', (_req, resp, next) => {
  resp.send(`<h1>SOCIAL NETWORK BACKEND</h1>
@@ -55,3 +35,23 @@ app.use('*', (_req, resp, next) => {
   );
  next();
 });
+
+// App.use(
+//  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//  (error: CustomError, _req: Request, resp: Response, _next: NextFunction) => {
+//   debug('error middleware');
+//   console.log('error mddleware')
+//   const status = error.statusCode || 500;
+//   const statusMessage = error.statusMessage || 'Internal server error';
+//   resp.json([
+//    {
+//     error: [
+//      {
+//       status,
+//       statusMessage,
+//      },
+//     ],
+//    },
+//   ]);
+//  }
+// );

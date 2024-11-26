@@ -12,6 +12,7 @@ export type state = {
  } | null;
  LoadingUserStatus: status;
  users: UserStructure[];
+ register: status;
 };
 
 export const initialState: state = {
@@ -19,6 +20,7 @@ export const initialState: state = {
  userLogged: null,
  LoadingUserStatus: "idle",
  users: [],
+ register: 'idle'
 };
 
 const slice = createSlice({
@@ -56,8 +58,15 @@ const slice = createSlice({
 
   //register cases
 
-  builder.addCase(asyncRegister.fulfilled, (state, action) => {});
-  builder.addCase(asyncRegister.rejected, (state, _action) => {});
+  builder.addCase(asyncRegister.fulfilled, (state, action) => {
+   state.register = 'complete';
+  });
+  builder.addCase(asyncRegister.pending, (state, _action) => {
+     state.register = 'loading';
+  });
+  builder.addCase(asyncRegister.rejected, (state, _action) => {
+     state.register = 'error';
+  });
  },
 });
 

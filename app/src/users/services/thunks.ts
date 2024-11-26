@@ -25,26 +25,36 @@ export const asyncLoadUsers = createAsyncThunk<apiResponse, string>(
 ); // Dispara un action que puede ser tres actiones, fulfilled, rejected, waiting
 
 export const asyncLogin = createAsyncThunk<loginData, loginCredential>(
- "users/login",
- async (user) => {
-  const url = GET_ALL_USERS + "login";
-  const response = await axios.post(
-   url,
-   { email: user.email, password: user.password },
-   { headers: { "Content-Type": "application/json" } }
-  );
-  if (!response.data) {
-   throw new Error("Failed to login");
+  "users/login",
+  async (user, { rejectWithValue }) => {
+    try {
+      const url = GET_ALL_USERS + "login";
+      const response = await axios.post(
+        url,
+        { email: user.email, password: user.password },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      const data = response.data;
+
+      console.log(data.length)
+      // Check if response is an empty array or any other failure indication
+      if (!data) {
+        throw new Error("Failed to login");
+      }
+
+      return data;
+    } catch (error: any) {
+      // Use `rejectWithValue` to pass error to `handleSubmit`
+      return rejectWithValue(error.message || "An unknown error occurred");
+    }
   }
-  const data = response.data;
-  return data;
- }
-); // Dispara un action que puede ser tres actiones, fulfilled, rejected, waiting
+);// Dispara un action que puede ser tres actiones, fulfilled, rejected, waiting
 
 export const asyncRegister = createAsyncThunk<
  apiResponse,
  { email: string; name: string; password: string }
->("users/register", async ({ name, email, password }) => {
+>("users/register", async ({ name, email, password, }, { rejectWithValue }) => {
+ try{
  const url = REGISTER_USER;
  const response = await axios.post(
   url, // url
@@ -58,6 +68,11 @@ export const asyncRegister = createAsyncThunk<
 
  const data = response.data; // No need to await here as there's no promise
  return data;
+
+} catch (error: any) {
+      // Use `rejectWithValue` to pass error to `handleSubmit`
+      return rejectWithValue(error.message || "An unknown error occurred");
+    }
 });
 
 export const asyncEditProfile = createAsyncThunk<
