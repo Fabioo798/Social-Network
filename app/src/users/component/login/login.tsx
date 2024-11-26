@@ -1,63 +1,70 @@
-import { SetStateAction, useState } from "react";
-import { UserApiRepo } from "../../api.repo";
-import "./login.css";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../core/store/store";
+import { loginCredential } from "../../model/types";
+import { Field, Form, Formik, FormikHelpers } from "formik";
+import { asyncLogin } from "../../services/thunks";
 
-const userApiRepo = new UserApiRepo();
+const Login = () => {
+ const dispatch = useDispatch<AppDispatch>();
 
-export function LoginForm(props: any) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+ const loginStatus = useSelector((state: RootState) => state.users.userLoginStatus);
 
-  const handleEmailChange = (event: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setEmail(event.target.value);
-  };
+ const handleSubmit = async (
+  values: loginCredential,
+  { setSubmitting, resetForm }: FormikHelpers<loginCredential>
+ ) => {
+  try {
+   await dispatch(asyncLogin(values));
+   setSubmitting(false);
+   resetForm();
+  } catch (error) {
+   setSubmitting(false);
+   //handle error
+  }
+ };
 
-  const handlePasswordChange = (event: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setPassword(event.target.value);
-  };
+ return (
+  <div className="form-container sign-in-container">
+   <Formik
+    initialValues={{
+     email: "",
+     password: "",
+    }}
+    onSubmit={handleSubmit}
+   >
+    {({ isSubmitting }) => (
+    <Form>
+     <h1>Sign in</h1>
+     <div className="social-container">
+      <a href="#" target="_blank" className="social">
+       <i className="fab fa-github"></i>
+      </a>
+      <a href="#" target="_blank" className="social">
+       <i className="fab fa-codepen"></i>
+      </a>
+      <a href="#" target="_blank" className="social">
+       <i className="fab fa-google"></i>
+      </a>
+     </div>
+     <span> Or sign in using E-Mail Address</span>
+     <label>
+      <Field type="email" placeholder="Email" name="email" />
+     </label>
+     <label>
+      <Field type="password" placeholder="Password" name="password" />
+     </label>
+     <a href="#">Forgot your password?</a>
+     <button type="submit" disabled={isSubmitting}>Sign In</button>
+            {(isSubmitting || loginStatus === "error") && (
+              <div className="login-status">
+                {loginStatus === "error" ? "Unable to log in. Please try again." : loginStatus}
+             </div>)}
+          </Form>
+        )}
+   </Formik>
+  </div>
+ );
+};
 
-  const handleSubmit = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    try {
-      await userApiRepo.logIn(email, password);
-      console.log("Logged in successfully");
-      props.handleLogin();
-      window.location.reload();
-      setEmail("");
-      setPassword("");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <h2>Login</h2>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={handleEmailChange}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordChange}
-          required
-        />
-      </div>
-      <button type="submit">Login</button>
-    </form>
-  );
-}
+export default Login;
